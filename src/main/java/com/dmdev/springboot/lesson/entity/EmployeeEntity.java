@@ -25,6 +25,8 @@ public class EmployeeEntity {
 
     private LocalDate birthDay;
 
+    private Integer salary;
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
