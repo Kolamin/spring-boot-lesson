@@ -2,6 +2,8 @@ package com.dmdev.springboot.lesson.repository;
 
 import com.dmdev.springboot.lesson.IntegrationTestBase;
 import com.dmdev.springboot.lesson.entity.EmployeeEntity;
+import com.dmdev.springboot.lesson.projection.EmployeeNameView;
+import com.dmdev.springboot.lesson.projection.EmployeeNativeView;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +38,23 @@ class EmployeeRepositoryTest extends IntegrationTestBase {
     void testFindByFirstNameAndSalary(){
         List<EmployeeEntity> employees =
                 employeeRepository.findAllByFirstNameAndSalary( "Ivan", 1000 );
-        MatcherAssert.assertThat( employees, hasSize(1) );
+        assertThat( employees, hasSize(1) );
     }
 
+    @Test
+    void testFindBySalary(){
+        List<EmployeeNameView> employees = employeeRepository.findAllBySalaryGreaterThan( 500 );
+        assertThat( employees, hasSize( 2 ) );
+    }
+    @Test
+    void testFindBySalaryNative(){
+        List<EmployeeNativeView> employees = employeeRepository.findAllBySalaryGreaterThanNative( 500 );
+        assertThat( employees, hasSize( 2 ) );
+    }
+
+    @Test
+    void testFindCustomQuery(){
+        List<EmployeeEntity> customQuery = employeeRepository.findCustomQuery();
+        assertThat( customQuery, hasSize( 0 ) );
+    }
 }
